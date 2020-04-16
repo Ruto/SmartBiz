@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    device = params[:device] if params[:device]
+    device =  "Android"   #params[:device] if params[:device]
     user = @user
     if @user.save
       token = WebToken.encode(user, device)
