@@ -21,10 +21,10 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    device =  "Android"   #params[:device] if params[:device]
+    # device = params[:device] if params[:device]
     user = @user
     if @user.save
-      token = WebToken.encode(user, device)
+      token = WebToken.encode(user) #, device
       UserMailer.with(user: @user).user_confirmation.deliver_later
       render :create, status: :created, locals: { token: token }
       #render json: { token: token }, status: :created
@@ -38,8 +38,8 @@ class UsersController < ApplicationController
     @user = User.find_by(email: params[:email].to_s.downcase)
 
     if @user && @user.authenticate(params[:password])
-      device = params[:device] if params[:device]
-      token = WebToken.encode(@user, device)
+      # device = params[:device] if params[:device]
+      token = WebToken.encode(@user) #, device
       #render json: {token: token}, status: :ok
       #render :login, status: :created, location: v1_user_url(@user, @token)
       render :login, status: :created, locals: { token: token }

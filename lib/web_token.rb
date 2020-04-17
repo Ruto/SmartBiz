@@ -23,9 +23,9 @@ class WebToken
       #implement reset token action if reset conditions met
     end
 
-    def self.encode(user, device)
+    def self.encode(user) #, device
       JWT.encode(
-        token_params(user, device ),
+        token_params(user),  #, device
         WebToken::SECRET,
         'HS256'
       )
@@ -45,10 +45,10 @@ class WebToken
        Time.at(payload['exp']) < Time.now
     end
 
-    def self.token_params(user, device)
+    def self.token_params(user) #, device
       {
         user_id: user.id,
-        exp: expiry(device),
+        exp: Time.now + 2.hours  #expiry(device),
         name: user.username,
         email: user.email
       }
