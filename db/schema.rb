@@ -10,10 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_16_065901) do
+ActiveRecord::Schema.define(version: 2020_04_19_100015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "forms", force: :cascade do |t|
+    t.string "name"
+    t.string "alias"
+    t.string "type"
+    t.boolean "active", default: true
+    t.bigint "structure_id"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["structure_id"], name: "index_forms_on_structure_id"
+    t.index ["user_id"], name: "index_forms_on_user_id"
+  end
+
+  create_table "structures", force: :cascade do |t|
+    t.string "name"
+    t.string "alias"
+    t.string "type"
+    t.string "ancestry"
+    t.string "category"
+    t.boolean "active", default: true
+    t.integer "structure_id"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ancestry", "structure_id"], name: "index_structures_on_ancestry_and_structure_id"
+    t.index ["user_id"], name: "index_structures_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
@@ -54,4 +82,7 @@ ActiveRecord::Schema.define(version: 2020_04_16_065901) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "forms", "structures"
+  add_foreign_key "forms", "users"
+  add_foreign_key "structures", "users"
 end
