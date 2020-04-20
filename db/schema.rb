@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_19_100015) do
+ActiveRecord::Schema.define(version: 2020_04_20_193110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "name"
+    t.string "account_type"
+    t.string "account_number"
+    t.text "desc"
+    t.boolean "active", default: false
+    t.bigint "user_id", null: false
+    t.boolean "fully_approved", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
 
   create_table "forms", force: :cascade do |t|
     t.string "name"
@@ -82,6 +95,7 @@ ActiveRecord::Schema.define(version: 2020_04_19_100015) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "accounts", "users"
   add_foreign_key "forms", "structures"
   add_foreign_key "forms", "users"
   add_foreign_key "structures", "users"

@@ -4,9 +4,9 @@ class WebToken
 
     def self.expiry(device)
       if device == "Android"
-        return (Time.now + 30.day).to_i
+        return (Time.now + 2.hours).to_i
       elsif device == "IOS"
-        return (Time.now + 30.day).to_i
+        return (Time.now + 2.hours).to_i
       else
         return (Time.now + 15.minutes).to_i
       end
