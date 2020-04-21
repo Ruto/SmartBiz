@@ -1,7 +1,7 @@
 module V1
   class TransactionsController < ApplicationController
     before_action :set_transaction, only: [:show, :update, :destroy]
-    before_action :authenticate_user!
+
     # GET /transactions
     # GET /transactions.json
     def index
@@ -49,7 +49,7 @@ module V1
 
       # Only allow a list of trusted parameters through.
       def transaction_params
-        params.require(:transaction).permit(:transactionable_id, :transactionable_type, :structure_id, :type, :money_in, :money_out, :transaction_cost, :balance, :total_balance, :memo, :image_id, :account_id, :user_id, :closed)
+        params.require(:transaction).permit(:payable_id, :payable_type, :structure_id, :type, :money_in, :money_out, :transaction_cost, :balance, :total_balance, :memo, :image_id, :account_id, :user_id, :checked, :closed)
       end
   end
 end

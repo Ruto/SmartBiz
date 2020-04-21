@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_20_194304) do
+ActiveRecord::Schema.define(version: 2020_04_21_172818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,31 @@ ActiveRecord::Schema.define(version: 2020_04_20_194304) do
     t.index ["user_id"], name: "index_structures_on_user_id"
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.string "payable_type", null: false
+    t.bigint "payable_id", null: false
+    t.bigint "structure_id", null: false
+    t.string "type"
+    t.float "money_in"
+    t.float "money_out"
+    t.float "transaction_cost"
+    t.float "balance"
+    t.float "total_balance"
+    t.text "memo"
+    t.bigint "image_id", null: false
+    t.bigint "account_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "checked", default: false
+    t.boolean "closed", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_transactions_on_account_id"
+    t.index ["image_id"], name: "index_transactions_on_image_id"
+    t.index ["payable_type", "payable_id"], name: "index_transactions_on_payable_type_and_payable_id"
+    t.index ["structure_id"], name: "index_transactions_on_structure_id"
+    t.index ["user_id"], name: "index_transactions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
     t.string "phone", null: false
@@ -111,4 +136,8 @@ ActiveRecord::Schema.define(version: 2020_04_20_194304) do
   add_foreign_key "forms", "structures"
   add_foreign_key "forms", "users"
   add_foreign_key "structures", "users"
+  add_foreign_key "transactions", "accounts"
+  add_foreign_key "transactions", "images"
+  add_foreign_key "transactions", "structures"
+  add_foreign_key "transactions", "users"
 end

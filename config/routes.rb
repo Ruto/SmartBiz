@@ -15,7 +15,10 @@ Rails.application.routes.draw do
      end
 
      resources :accounts
-      
+     resources :images
+     resources :transactions
+
+
      resources :forms do
        namespace :forms do
          resources :consignment, :delivery_note, :dispatch_note, :goods_received, :invoice, :issue_note,
