@@ -58,6 +58,11 @@ module V1
               products_array.each do |product|
                    Structure.create(:name => "#{@structure.name} #{product}", :parent => get_product_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => current_user.id)
               end
+          elsif  @structure.category == "Service"
+              products_array = ["ServiceIncome", "ServiceExpense"]
+              products_array.each do |product|
+                   Structure.create(:name => "#{@structure.name} #{product}", :parent => get_product_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => current_user.id)
+              end
           else
 
           end

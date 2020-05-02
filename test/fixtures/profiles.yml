@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  username: MyString
+  phone: MyString
+  email: MyString
+  phone_token: MyString
+  email_token: MyString
+  user: one
+  structure: one
+  desc: MyText
+  inviter: 1
+  confirmed_profile: false
+  revoke_profile: false
+  confirmed_by: 1
+  revoked_by: 1
+
+two:
+  username: MyString
+  phone: MyString
+  email: MyString
+  phone_token: MyString
+  email_token: MyString
+  user: two
+  structure: two
+  desc: MyText
+  inviter: 1
+  confirmed_profile: false
+  revoke_profile: false
+  confirmed_by: 1
+  revoked_by: 1

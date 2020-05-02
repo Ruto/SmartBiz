@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_21_172818) do
+ActiveRecord::Schema.define(version: 2020_05_01_230403) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,33 @@ ActiveRecord::Schema.define(version: 2020_04_21_172818) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
+  end
+
+  create_table "profiles", force: :cascade do |t|
+    t.string "username"
+    t.string "phone"
+    t.string "email"
+    t.string "phone_token"
+    t.string "email_token"
+    t.bigint "user_id", null: false
+    t.bigint "structure_id", null: false
+    t.bigint "images_id"
+    t.text "desc"
+    t.integer "inviter"
+    t.boolean "confirmed_profile", default: false
+    t.boolean "revoke_profile", default: false
+    t.integer "confirmed_by"
+    t.integer "revoked_by"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["confirmed_by"], name: "index_profiles_on_confirmed_by"
+    t.index ["email_token"], name: "index_profiles_on_email_token", unique: true
+    t.index ["images_id"], name: "index_profiles_on_images_id"
+    t.index ["inviter"], name: "index_profiles_on_inviter"
+    t.index ["phone_token"], name: "index_profiles_on_phone_token", unique: true
+    t.index ["revoked_by"], name: "index_profiles_on_revoked_by"
+    t.index ["structure_id"], name: "index_profiles_on_structure_id"
+    t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
   create_table "structures", force: :cascade do |t|
@@ -135,6 +162,9 @@ ActiveRecord::Schema.define(version: 2020_04_21_172818) do
   add_foreign_key "accounts", "users"
   add_foreign_key "forms", "structures"
   add_foreign_key "forms", "users"
+  add_foreign_key "profiles", "images", column: "images_id"
+  add_foreign_key "profiles", "structures"
+  add_foreign_key "profiles", "users"
   add_foreign_key "structures", "users"
   add_foreign_key "transactions", "accounts"
   add_foreign_key "transactions", "images"
