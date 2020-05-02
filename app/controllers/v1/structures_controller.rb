@@ -41,9 +41,9 @@ module V1
     # POST /structures.json
     def create
       @structure = Structure.new(structure_params)
-      @structure.user_id = current_user.id    ## this is when users is added.
+      @structure.user_id = @current_user.id    ## this is when users is added.
 
-        binding.pry
+        #binding.pry
         if @structure.save
           # @structure.update(:structure_id => @structure.id)
             @category_array = ["Department", "Company", "Sub_Department", "Product_Group"]
@@ -51,17 +51,17 @@ module V1
           if @category_array.include? @structure.category
               totals_array = ["Income", "Expense", "IndirectExpense", "AdminstrativeCost"]
               totals_array.each do |total|
-                   Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => current_user.id)
+                   Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => @current_user.id)
               end
           elsif  @structure.category == "Product"
               products_array = ["ProductSale", "ProductExpense"]
               products_array.each do |product|
-                   Structure.create(:name => "#{@structure.name} #{product}", :parent => get_product_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => current_user.id)
+                   Structure.create(:name => "#{@structure.name} #{product}", :parent => get_product_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => @current_user.id)
               end
           elsif  @structure.category == "Service"
-              products_array = ["ServiceIncome", "ServiceExpense"]
-              products_array.each do |product|
-                   Structure.create(:name => "#{@structure.name} #{product}", :parent => get_product_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => current_user.id)
+              services_array = ["ServiceIncome", "ServiceExpense"]
+              services_array.each do |service|
+                   Structure.create(:name => "#{@structure.name} #{service}", :parent => get_service_parent(service), :type => "Structures::#{service}", :category => service, :structure_id => @structure.id, :user_id => @current_user.id)
               end
           else
 
@@ -128,6 +128,16 @@ module V1
           if product == "ProductSale"
              Structures::Income.find_by(:structure_id => @structure.parent.id)
           elsif product == "ProductExpense"
+             Structures::Expense.find_by(:structure_id => @structure.parent.id)
+          else
+            return nil
+          end
+      end
+
+      def get_service_parent(service)
+          if service == "ServiceIncome"
+             Structures::Income.find_by(:structure_id => @structure.parent.id)
+          elsif service == "ServiceExpense"
              Structures::Expense.find_by(:structure_id => @structure.parent.id)
           else
             return nil
