@@ -25,7 +25,7 @@ class WebToken
 
     def self.encode(user, device)
       JWT.encode(
-        token_params(user, device ),
+        token_params(user, device),
         WebToken::SECRET,
         'HS256'
       )

@@ -34,6 +34,10 @@ Rails.application.routes.draw do
             resources :incomes, :expenses, :indirect_expenses, :adminstrative_costs,
             :controller => 'structures', :except => [:destroy, :edit, :update ]
           end
+          collection do
+            put 'link_unit_groups'
+            post 'create_unit_group'
+          end
       end
   end
 

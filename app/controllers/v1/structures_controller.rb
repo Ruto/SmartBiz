@@ -8,8 +8,8 @@ module V1
     def index
       @structures = Structure.all
       #@structures = Structure.arrange_serializable
-      render json: @structures
-
+      #render json: @structures
+      render :index, status: :ok, locals: { structures: @structures  }
     end
 
     # GET /structures/1
@@ -37,40 +37,43 @@ module V1
     def edit
     end
 
+    def create_unit_group
+      @structure = Structure.new(structure_params)
+    # @structure.
+    end
+
+    def link_unit_groups
+
+    end
+
     # POST /structures
     # POST /structures.json
     def create
       @structure = Structure.new(structure_params)
       @structure.user_id = @current_user.id    ## this is when users is added.
 
+      products_services_array = ["Product", "ProductGroup", "Service", "ServiceGroup"]
+
+      if  products_services_array.include? @structure.category
+           @structure.parent = get_unit_parent(params[:parent_id])
+           @structure.type = "Structures::#{@structure.category}"
+           @structure.structure_id = params[:structure_id] if params[:structure_id].present?
+      end
         #binding.pry
         if @structure.save
           # @structure.update(:structure_id => @structure.id)
-            @category_array = ["Department", "Company", "Sub_Department", "Product_Group"]
+            @category_array = ["Holding_Company", "Company", "Department", "Sub_Department" ]
 
-          if @category_array.include? @structure.category
+            if @category_array.include? @structure.category
               totals_array = ["Income", "Expense", "IndirectExpense", "AdminstrativeCost"]
-              totals_array.each do |total|
+                totals_array.each do |total|
                    Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => @current_user.id)
-              end
-          elsif  @structure.category == "Product"
-              products_array = ["ProductSale", "ProductExpense"]
-              products_array.each do |product|
-                   Structure.create(:name => "#{@structure.name} #{product}", :parent => get_product_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => @current_user.id)
-              end
-          elsif  @structure.category == "Service"
-              services_array = ["ServiceIncome", "ServiceExpense"]
-              services_array.each do |service|
-                   Structure.create(:name => "#{@structure.name} #{service}", :parent => get_service_parent(service), :type => "Structures::#{service}", :category => service, :structure_id => @structure.id, :user_id => @current_user.id)
-              end
-          else
-
-          end
+                end
+            end
 
            #render json: status: :created, location: @structure
            render :create, status: :created, locals: { structure: @structure  }
         else
-
            render json: @structure.errors, status: :unprocessable_entity
         end
 
@@ -124,24 +127,8 @@ module V1
           end
       end
 
-      def get_product_parent(product)
-          if product == "ProductSale"
-             Structures::Income.find_by(:structure_id => @structure.parent.id)
-          elsif product == "ProductExpense"
-             Structures::Expense.find_by(:structure_id => @structure.parent.id)
-          else
-            return nil
-          end
-      end
-
-      def get_service_parent(service)
-          if service == "ServiceIncome"
-             Structures::Income.find_by(:structure_id => @structure.parent.id)
-          elsif service == "ServiceExpense"
-             Structures::Expense.find_by(:structure_id => @structure.parent.id)
-          else
-            return nil
-          end
+      def get_unit_parent(params[:parent_id])
+         Structures.find_by_id(params[:parent_id])
       end
 
   end
