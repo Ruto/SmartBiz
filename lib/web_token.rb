@@ -42,7 +42,7 @@ class WebToken
     private
 
     def self.expired(payload)
-       Time.at(payload['exp']) < Time.now.to_i
+       Time.at(payload['exp']) < Time.now
     end
 
     def self.token_params(user, device)
