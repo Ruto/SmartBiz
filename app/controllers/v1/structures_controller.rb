@@ -53,9 +53,10 @@ module V1
       @structure.user_id = @current_user.id    ## this is when users is added.
 
       products_services_array = ["Product", "ProductGroup", "Service", "ServiceGroup"]
-
+      unit = params[:parent_id]
+      
       if  products_services_array.include? @structure.category
-           @structure.parent = get_unit_parent(params[:parent_id])
+           @structure.parent = get_unit_parent(unit)
            @structure.type = "Structures::#{@structure.category}"
            @structure.structure_id = params[:structure_id] if params[:structure_id].present?
       end
@@ -127,8 +128,8 @@ module V1
           end
       end
 
-      def get_unit_parent(params[:parent_id])
-         Structures.find_by_id(params[:parent_id])
+      def get_unit_parent(unit)
+         Structures.find_by_id(unit)
       end
 
   end
