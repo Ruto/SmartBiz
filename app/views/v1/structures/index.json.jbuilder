@@ -1,1 +1,1 @@
-json.array! @structures, partial: "v1/structures/structure", as: :profile
+json.array! @structures, partial: "v1/structures/structure", as: :structure
