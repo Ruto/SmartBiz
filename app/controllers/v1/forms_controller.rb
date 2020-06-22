@@ -4,7 +4,18 @@ module V1
     before_action :authenticate_user!
 
 
-
+      def pdf_view
+       @form = Form.new
+        respond_to do |format|
+          format.html
+          format.pdf do
+            pdf = FormPdf.new(@form, view_context)
+            send_data pdf.render, filename: "order_#{@form.form_number}.pdf",
+                                  type: "application/pdf",
+                                  disposition: "inline"
+          end
+        end
+      end
 
 
     private
