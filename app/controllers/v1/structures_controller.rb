@@ -54,23 +54,25 @@ module V1
 
       products_services_array = ["Product", "ProductGroup", "Service", "ServiceGroup"]
       unit = params[:parent_id]
-      
+
       if  products_services_array.include? @structure.category
            @structure.parent = get_unit_parent(unit)
            @structure.type = "Structures::#{@structure.category}"
            @structure.structure_id = params[:structure_id] if params[:structure_id].present?
       end
+
+      @category_array = ["Holding_Company", "Company", "Department", "Sub_Department" ]
+
+      if @category_array.include? @structure.category
+        totals_array = ["Income", "Expense", "IndirectExpense", "AdminstrativeCost"]
+          totals_array.each do |total|
+             Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => @current_user.id)
+          end
+      end
+
         #binding.pry
         if @structure.save
           # @structure.update(:structure_id => @structure.id)
-            @category_array = ["Holding_Company", "Company", "Department", "Sub_Department" ]
-
-            if @category_array.include? @structure.category
-              totals_array = ["Income", "Expense", "IndirectExpense", "AdminstrativeCost"]
-                totals_array.each do |total|
-                   Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => @current_user.id)
-                end
-            end
 
            #render json: status: :created, location: @structure
            render :create, status: :created, locals: { structure: @structure  }
