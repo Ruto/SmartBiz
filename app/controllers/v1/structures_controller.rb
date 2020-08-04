@@ -1,7 +1,7 @@
 module V1
   class StructuresController < ApplicationController
     before_action :set_structure, only: [:show, :edit, :update, :destroy]
-    before_action :authenticate_user!
+    #before_action :authenticate_user!
 
     # GET /structures
     # GET /structures.json
@@ -51,15 +51,6 @@ module V1
     def create
       @structure = Structure.new(structure_params)
       @structure.user_id = @current_user.id    ## this is when users is added.
-
-
-      unit = params[:parent_id]
-
-      if  products_services_array.include? @structure.category
-           @structure.parent = get_unit_parent(unit)
-           @structure.type = "Structures::#{@structure.category}"
-          # @structure.structure_id = params[:structure_id] if params[:structure_id].present?
-      end
 
         #binding.pry
         if @structure.save
