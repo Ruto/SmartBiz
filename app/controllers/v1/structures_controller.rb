@@ -52,27 +52,35 @@ module V1
       @structure = Structure.new(structure_params)
       @structure.user_id = @current_user.id    ## this is when users is added.
 
-      products_services_array = ["Product", "ProductGroup", "Service", "ServiceGroup"]
+
       unit = params[:parent_id]
 
       if  products_services_array.include? @structure.category
            @structure.parent = get_unit_parent(unit)
            @structure.type = "Structures::#{@structure.category}"
-           @structure.structure_id = params[:structure_id] if params[:structure_id].present?
-      end
-
-      @category_array = ["Holding_Company", "Company", "Department", "Sub_Department" ]
-
-      if @category_array.include? @structure.category
-        totals_array = ["Income", "Expense", "IndirectExpense", "AdminstrativeCost"]
-          totals_array.each do |total|
-             Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => @current_user.id)
-          end
+          # @structure.structure_id = params[:structure_id] if params[:structure_id].present?
       end
 
         #binding.pry
         if @structure.save
           # @structure.update(:structure_id => @structure.id)
+          @category_array = ["Holding_Company", "Company", "Department", "Sub_Department" ]
+          @groups_array = ["ProductGroup", "ServiceGroup"]
+          @products_services_array = ["Product", "Service"]
+
+          if @category_array.include? @structure.category
+              totals_array = ["Income", "Expense", "IndirectExpense", "AdminstrativeCost"]
+              totals_array.each do |total|
+                   Structure.create(:name => "#{@structure.name} #{total}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => @current_user.id)
+              end
+          elsif  @products_services_array.include? @structure.category # == "Product"
+              products_array = ["Income", "Expense"]
+              products_array.each do |product|
+                   Structure.create(:name => "#{@structure.name} #{product}", :parent => get_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => @current_user.id)
+              end
+          else
+
+          end
 
            #render json: status: :created, location: @structure
            render :create, status: :created, locals: { structure: @structure  }
@@ -124,6 +132,8 @@ module V1
 
       def get_parent(total)
           if @structure.parent != nil and @category_array.include? @structure.category
+            "Structures::#{total}".classify.constantize.find_by(:structure_id => @structure.parent.id)
+          elsif @structure.parent != nil and @products_services_array.include? @structure.category
             "Structures::#{total}".classify.constantize.find_by(:structure_id => @structure.parent.id)
           else
             return nil
