@@ -8,7 +8,7 @@ class WebToken
       elsif device == "IOS"
         return (Time.now + 2.hours).to_i
       else
-        return (Time.now + 15.minutes).to_i
+        return (Time.now + 40.minutes).to_i
       end
     end
 

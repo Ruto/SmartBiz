@@ -62,12 +62,12 @@ module V1
           if @category_array.include? @structure.category
               totals_array = ["Income", "Expense", "IndirectExpense", "AdminstrativeCost"]
               totals_array.each do |total|
-                   Structure.create(:name => "#{@structure.name} #{total}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => @current_user.id)
+                Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id)
               end
           elsif  @products_services_array.include? @structure.category # == "Product"
               products_array = ["Income", "Expense"]
               products_array.each do |product|
-                   Structure.create(:name => "#{@structure.name} #{product}", :parent => get_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => @current_user.id)
+                Structure.create(:name => "#{@structure.name} #{product}", :parent => get_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id)
               end
           else
 
