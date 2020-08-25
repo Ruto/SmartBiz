@@ -56,18 +56,17 @@ module V1
         if @structure.save
           # @structure.update(:structure_id => @structure.id)
           @category_array = ["Holding_Company", "Company", "Department", "Sub_Department" ]
-          @groups_array = ["ProductGroup", "ServiceGroup"]
-          @products_services_array = ["Product", "Service"]
+          @products_services_array = ["Product", "Service", "ProductGroup", "ServiceGroup"]
 
           if @category_array.include? @structure.category
-              totals_array = ["Income", "Expense", "IndirectExpense", "AdminstrativeCost"]
+              totals_array = ["Income", "Expense", "DirectExpense", "IndirectExpense", "AdminstrativeCost"]
               totals_array.each do |total|
                 Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => @current_user.id)
               end
-          elsif  @products_services_array.include? @structure.category # == "Product"
+          elsif  @products_services_array.include? @structure.category
               products_array = ["Income", "Expense"]
               products_array.each do |product|
-                   Structure.create(:name => "#{@structure.name} #{product}", :parent => get_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => @current_user.id)
+                   Structure.create(:name => "#{@structure.name} #{product}", :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => @current_user.id)
               end
           else
 

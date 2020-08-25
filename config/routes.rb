@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-
-
-
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   namespace :v1, defaults: { format: :json } do
@@ -20,9 +17,9 @@ Rails.application.routes.draw do
      resources :images
      resources :transactions
      resources :profiles
-     resources :structurables
-
-
+     resources :codes
+     resources :products
+    
      resources :forms do
        namespace :forms do
          resources :consignment, :delivery_note, :dispatch_note, :goods_received, :invoice, :issue_note,
@@ -40,7 +37,7 @@ Rails.application.routes.draw do
             put 'link_unit_groups'
             post 'create_unit_group'
           end
-      end
+     end
   end
 
 

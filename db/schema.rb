@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_04_170257) do
+ActiveRecord::Schema.define(version: 2020_08_08_090236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,19 @@ ActiveRecord::Schema.define(version: 2020_05_04_170257) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "codes", force: :cascade do |t|
+    t.string "cost_code"
+    t.string "system_code"
+    t.string "codable_type", null: false
+    t.bigint "codable_id", null: false
+    t.boolean "active"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["codable_type", "codable_id"], name: "index_codes_on_codable_type_and_codable_id"
+    t.index ["user_id"], name: "index_codes_on_user_id"
   end
 
   create_table "forms", force: :cascade do |t|
@@ -51,6 +64,19 @@ ActiveRecord::Schema.define(version: 2020_05_04_170257) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.string "code"
+    t.boolean "income", default: false
+    t.boolean "expense", default: false
+    t.boolean "resale", default: false
+    t.boolean "divisible", default: false
+    t.boolean "value_addable", default: false
+    t.boolean "active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -173,6 +199,7 @@ ActiveRecord::Schema.define(version: 2020_05_04_170257) do
   end
 
   add_foreign_key "accounts", "users"
+  add_foreign_key "codes", "users"
   add_foreign_key "forms", "structures"
   add_foreign_key "forms", "users"
   add_foreign_key "profiles", "images", column: "images_id"
