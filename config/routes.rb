@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resources :organizations
-  resources :products
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   namespace :v1, defaults: { format: :json } do
@@ -20,7 +18,11 @@ Rails.application.routes.draw do
      resources :transactions
      resources :profiles
      resources :codes
-       
+
+     resources :organizations
+     
+     resources :products
+
      resources :forms do
        namespace :forms do
          resources :consignment, :delivery_note, :dispatch_note, :goods_received, :invoice, :issue_note,

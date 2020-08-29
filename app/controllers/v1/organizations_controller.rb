@@ -21,7 +21,7 @@ module V1
       @organization = @current_user.id
 
       if @organization.save
-       @structure = Structure.create(:name => "#{@organization.name} #{@organization.category.pluralize}", :parent => get_parent(total), :type => "Structures::#{@organization.category}", :category => @organization.category, :user_id => @current_user.id)
+       @structure = Structure.create(:name => "#{@organization.name} #{@organization.category.pluralize}", :parent => get_parent, :type => "Structures::#{@organization.category}", :category => @organization.category, :user_id => @current_user.id)
        case
         when @organization.income == true
           Structure.create(:name => "#{@organization.name} Incomes", :parent => get_income_parent, :type => "Structures::Income", :structurable_id => @organization.id, :structurable_type => "Organization", :category => "Income", :structure_id => @structure.id, :user_id => @current_user.id)
@@ -74,7 +74,7 @@ module V1
           if @structure.parent != nil
              @structure.parent.id
           else
-            return nil   
+            return nil
           end
       end
 
