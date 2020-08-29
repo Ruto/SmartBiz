@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_28_203711) do
+ActiveRecord::Schema.define(version: 2020_08_29_104918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,22 @@ ActiveRecord::Schema.define(version: 2020_08_28_203711) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string "name"
+    t.string "alias"
+    t.string "type"
+    t.string "category"
+    t.boolean "income"
+    t.boolean "direct_expense"
+    t.boolean "indirect_expense"
+    t.boolean "administrative_cost"
+    t.boolean "active", default: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_organizations_on_user_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -200,6 +216,7 @@ ActiveRecord::Schema.define(version: 2020_08_28_203711) do
   add_foreign_key "codes", "users"
   add_foreign_key "forms", "structures"
   add_foreign_key "forms", "users"
+  add_foreign_key "organizations", "users"
   add_foreign_key "products", "users"
   add_foreign_key "profiles", "images", column: "images_id"
   add_foreign_key "profiles", "structures"

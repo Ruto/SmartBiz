@@ -59,7 +59,7 @@ module V1
           @products_services_array = ["Product", "Service", "ProductGroup", "ServiceGroup"]
 
           if @category_array.include? @structure.category
-              totals_array = ["Income", "Expense", "DirectExpense", "IndirectExpense", "AdminstrativeCost"]
+              totals_array = ["Income", "DirectExpense", "IndirectExpense", "AdminstrativeCost"]
               totals_array.each do |total|
                 Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => @current_user.id)
               end
@@ -115,7 +115,7 @@ module V1
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def structure_params
-        #params.require(:structure).permit(:name, :alias, :type, :parent_id, :category, :active, :user_id, :structure_id)
+        #params.require(:structure).permit(:name, :alias, :type, :parent_id, :category, :active, :user_id, :structure_id, :structure_id, :structurable_id, :structurable_type)
         params.permit(:name, :alias, :type, :parent_id, :category, :active, :user_id, :structure_id, :structurable_id, :structurable_type)
 
       end
