@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_08_090236) do
+ActiveRecord::Schema.define(version: 2020_08_28_203711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,8 +29,9 @@ ActiveRecord::Schema.define(version: 2020_08_08_090236) do
   end
 
   create_table "codes", force: :cascade do |t|
-    t.string "cost_code"
+    t.string "code"
     t.string "system_code"
+    t.string "custom_code"
     t.string "codable_type", null: false
     t.bigint "codable_id", null: false
     t.boolean "active"
@@ -68,15 +69,22 @@ ActiveRecord::Schema.define(version: 2020_08_08_090236) do
 
   create_table "products", force: :cascade do |t|
     t.string "name"
-    t.string "code"
-    t.boolean "income", default: false
-    t.boolean "expense", default: false
-    t.boolean "resale", default: false
-    t.boolean "divisible", default: false
-    t.boolean "value_addable", default: false
-    t.boolean "active", default: true
+    t.string "alias"
+    t.boolean "goods"
+    t.boolean "service"
+    t.boolean "experience"
+    t.boolean "income"
+    t.boolean "expense"
+    t.string "durability"
+    t.string "consumer_product"
+    t.string "industrial_product"
+    t.boolean "divisible"
+    t.boolean "value_addable"
+    t.boolean "active"
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_products_on_user_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -106,19 +114,6 @@ ActiveRecord::Schema.define(version: 2020_08_08_090236) do
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
-  create_table "structurables", id: false, force: :cascade do |t|
-    t.integer "structure_id"
-    t.integer "structured_id"
-    t.string "cost_code"
-    t.boolean "active", default: true
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["structure_id"], name: "index_structurables_on_structure_id"
-    t.index ["structured_id"], name: "index_structurables_on_structured_id"
-    t.index ["user_id"], name: "index_structurables_on_user_id"
-  end
-
   create_table "structures", force: :cascade do |t|
     t.string "name"
     t.string "alias"
@@ -130,7 +125,10 @@ ActiveRecord::Schema.define(version: 2020_08_08_090236) do
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "structurable_type"
+    t.bigint "structurable_id"
     t.index ["ancestry", "structure_id"], name: "index_structures_on_ancestry_and_structure_id"
+    t.index ["structurable_type", "structurable_id"], name: "index_structures_on_structurable_type_and_structurable_id"
     t.index ["user_id"], name: "index_structures_on_user_id"
   end
 
@@ -202,10 +200,10 @@ ActiveRecord::Schema.define(version: 2020_08_08_090236) do
   add_foreign_key "codes", "users"
   add_foreign_key "forms", "structures"
   add_foreign_key "forms", "users"
+  add_foreign_key "products", "users"
   add_foreign_key "profiles", "images", column: "images_id"
   add_foreign_key "profiles", "structures"
   add_foreign_key "profiles", "users"
-  add_foreign_key "structurables", "users"
   add_foreign_key "structures", "users"
   add_foreign_key "transactions", "accounts"
   add_foreign_key "transactions", "images"

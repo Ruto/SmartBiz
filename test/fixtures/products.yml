@@ -3,19 +3,25 @@
 one:
   name: MyString
   code: MyString
+  custom_code: MyString
+  goods: false
+  service: false
   income: false
   expense: false
-  resale: false
   divisible: false
   value_addable: false
   active: false
+  user: one
 
 two:
   name: MyString
   code: MyString
+  custom_code: MyString
+  goods: false
+  service: false
   income: false
   expense: false
-  resale: false
   divisible: false
   value_addable: false
   active: false
+  user: two

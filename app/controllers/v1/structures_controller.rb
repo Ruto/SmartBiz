@@ -116,7 +116,7 @@ module V1
       # Never trust parameters from the scary internet, only allow the white list through.
       def structure_params
         #params.require(:structure).permit(:name, :alias, :type, :parent_id, :category, :active, :user_id, :structure_id)
-        params.permit(:name, :alias, :type, :parent_id, :category, :active, :user_id, :structure_id)
+        params.permit(:name, :alias, :type, :parent_id, :category, :active, :user_id, :structure_id, :structurable_id, :structurable_type)
 
       end
 

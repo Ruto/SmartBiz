@@ -18,6 +18,7 @@ module V1
     # POST /products.json
     def create
       @product = Product.new(product_params)
+      @product.user_id = @current_user.id 
 
       if @product.save
         render :show, status: :created, location: @product
@@ -50,7 +51,7 @@ module V1
 
       # Only allow a list of trusted parameters through.
       def product_params
-        params.require(:product).permit(:name, :code, :income, :expense, :resale, :divisible, :value_addable, :active, :user_id)
+        params.require(:product).permit(:name, :alias, :goods, :service, :experience, :income, :expense, :durability, :consumer_product, :industrial_product, :divisible, :value_addable, :active, :user_id)
       end
   end
 end
