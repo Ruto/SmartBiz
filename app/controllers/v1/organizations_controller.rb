@@ -18,7 +18,7 @@ module V1
     # POST /organizations.json
     def create
       @organization = Organization.new(organization_params)
-      @organization = @current_user.id
+      @organization.user_id = @current_user.id
 
       if @organization.save
        @structure = Structure.create(:name => "#{@organization.name} #{@organization.category.pluralize}", :parent => get_parent, :type => "Structures::#{@organization.category}", :category => @organization.category, :user_id => @current_user.id)
