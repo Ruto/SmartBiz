@@ -71,8 +71,8 @@ module V1
       end
 
       def get_parent
-          if @structure.parent != nil
-             @structure.parent.id
+          if @organization.structures != nil
+             @organization.structures.first.parent.id
           else
             return nil
           end
