@@ -138,11 +138,11 @@ ActiveRecord::Schema.define(version: 2020_08_29_104918) do
     t.string "category"
     t.boolean "active", default: true
     t.integer "structure_id"
+    t.string "structurable_type"
+    t.bigint "structurable_id"
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "structurable_type"
-    t.bigint "structurable_id"
     t.index ["ancestry", "structure_id"], name: "index_structures_on_ancestry_and_structure_id"
     t.index ["structurable_type", "structurable_id"], name: "index_structures_on_structurable_type_and_structurable_id"
     t.index ["user_id"], name: "index_structures_on_user_id"

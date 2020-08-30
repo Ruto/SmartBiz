@@ -19,25 +19,26 @@ module V1
     def create
       @organization = Organization.new(organization_params)
       @organization.user_id = @current_user.id
+      @organization.type = "Organizations::#{@organization.category}"
 
       if @organization.save
-       @structure = Structure.create(:name => "#{@organization.name} #{@organization.category.pluralize}", :parent => get_parent, :type => "Structures::#{@organization.category}", :category => @organization.category, :user_id => @current_user.id)
-       case
-        when @organization.income == true
+       @structure = Structure.create(:name => "#{@organization.name} #{@organization.category.pluralize}", :parent => get_parent, :structurable_id => @organization.id, :structurable_type => "Organization", :category => @organization.category, :user_id => @current_user.id)
+
+        if @organization.income == true
           Structure.create(:name => "#{@organization.name} Incomes", :parent => get_income_parent, :type => "Structures::Income", :structurable_id => @organization.id, :structurable_type => "Organization", :category => "Income", :structure_id => @structure.id, :user_id => @current_user.id)
-        when @organization.direct_expense == true
-          Structure.create(:name => "#{@organization.name} DirectExpenses", :parent => get_direct_expense_parent, :type => "Structures::DirectExpense", :category => "DirectExpense", :structure_id => @structure.id, :user_id => @current_user.id)
-        when @organization.indirect_expense == true
-          Structure.create(:name => "#{@organization.name} IndirectExpenses", :parent => get_indirect_expense_parent, :type => "Structures::IndirectExpense", :category => "IndirectExpense", :structure_id => @structure.id, :user_id => @current_user.id)
-        when @organization.administrative_cost == true
-          Structure.create(:name => "#{@organization.name} AdminstrativeCost", :parent => get_administrative_cost_parent, :type => "Structures::AdminstrativeCost", :category => "AdminstrativeCost", :structure_id => @structure.id, :user_id => @current_user.id)
-        else
+        end
+        if @organization.direct_expense == true
+          Structure.create(:name => "#{@organization.name} DirectExpenses", :parent => get_direct_expense_parent, :type => "Structures::DirectExpense", :structurable_id => @organization.id, :structurable_type => "Organization", :category => "DirectExpense", :structure_id => @structure.id, :user_id => @current_user.id)
+        end
+        if  @organization.indirect_expense == true
+          Structure.create(:name => "#{@organization.name} IndirectExpenses", :parent => get_indirect_expense_parent, :type => "Structures::IndirectExpense", :structurable_id => @organization.id, :structurable_type => "Organization", :category => "IndirectExpense", :structure_id => @structure.id, :user_id => @current_user.id)
+        end
+        if @organization.administrative_cost == true
+          Structure.create(:name => "#{@organization.name} AdminstrativeCost", :parent => get_administrative_cost_parent, :type => "Structures::AdminstrativeCost", :structurable_id => @organization.id, :structurable_type => "Organization", :category => "AdminstrativeCost", :structure_id => @structure.id, :user_id => @current_user.id)
+        end
 
-       end
-
-
-
-        render :show, status: :created, location: @organization
+      #  render :show, status: :created, location: @organization
+        render :create, status: :created, locals: { organization: @organization  }
       else
         render json: @organization.errors, status: :unprocessable_entity
       end
@@ -71,8 +72,8 @@ module V1
       end
 
       def get_parent
-          if @organization.structures != nil
-             @organization.structures.first.parent.id
+          if @organization.structures.empty? != true
+             @organization.structures.first.parent
           else
             return nil
           end

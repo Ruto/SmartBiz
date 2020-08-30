@@ -1,8 +1,8 @@
-module Structures
-    class Revenue < Structure
+module Organizations
+    class SubDepartment < Organization
       #this sorts out routing issues for subclassing
       def self.model_name
-         Structure.model_name
+        Organization.model_name
       end
 
     end

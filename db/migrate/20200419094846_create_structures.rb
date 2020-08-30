@@ -8,7 +8,7 @@ class CreateStructures < ActiveRecord::Migration[6.0]
       t.string :category
       t.boolean :active, default: true
       t.integer :structure_id
-    # t.references :structurable, polymorphic: true, null: false, index: true
+      t.references :structurable, polymorphic: true, null: true
       t.references :user, null: false, foreign_key: true
 
       t.timestamps

@@ -1,8 +1,8 @@
-module Structures
-    class HoldingCompany < Structure
+module Organizations
+    class HoldingCompany < Organization
       #this sorts out routing issues for subclassing
       def self.model_name
-         Structure.model_name
+        Organization.model_name
       end
 
     end
