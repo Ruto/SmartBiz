@@ -1,8 +1,8 @@
-module Products
-    class Good < Product
+module Structures
+    class ServiceSale < Structure
       #this sorts out routing issues for subclassing
       def self.model_name
-        Product.model_name
+         Structure.model_name
       end
 
     end

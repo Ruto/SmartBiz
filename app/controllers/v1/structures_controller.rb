@@ -1,7 +1,7 @@
 module V1
   class StructuresController < ApplicationController
     before_action :set_structure, only: [:show, :edit, :update, :destroy]
-    before_action :authenticate_user!
+  #  before_action :authenticate_user!
 
     # GET /structures
     # GET /structures.json
@@ -50,7 +50,10 @@ module V1
     # POST /structures.json
     def create
       @structure = Structure.new(structure_params)
-      @structure.user_id = @current_user.id    ## this is when users is added.
+    #  @structure.user_id = @current_user.id    ## this is when users is added.
+      @structure.structurable_id = params[:parent_id]
+      @structure.structurable_type = "Structure"
+
 
         #binding.pry
         if @structure.save
@@ -61,12 +64,12 @@ module V1
           if @category_array.include? @structure.category
               totals_array = ["Income", "DirectExpense", "IndirectExpense", "AdminstrativeCost"]
               totals_array.each do |total|
-                Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :user_id => @current_user.id)
+                Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id, :structurable_id => @structure.id, :structurable_type => "Structure", :user_id => @structure.user_id)
               end
           elsif  @products_services_array.include? @structure.category
               products_array = ["Income", "Expense"]
               products_array.each do |product|
-                   Structure.create(:name => "#{@structure.name} #{product}", :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :user_id => @current_user.id)
+                Structure.create(:name => "#{@structure.name} #{product}", :type => "Structures::#{product}", :category => product, :structure_id => @structure.id, :structurable_id => @structure.id, :structurable_type => "Structure", :user_id => @structure.user_id)
               end
           else
 

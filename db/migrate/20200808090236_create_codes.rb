@@ -8,6 +8,7 @@ class CreateCodes < ActiveRecord::Migration[6.0]
       t.references :codable, polymorphic: true, null: false
       t.boolean :active
       t.references :user, null: false, foreign_key: true
+   #  t.string :workflow_state    
 
       t.timestamps
     end

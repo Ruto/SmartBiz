@@ -19,9 +19,13 @@ Rails.application.routes.draw do
      resources :profiles
      resources :codes
 
-     resources :organizations
-     
-     resources :products
+     resources :organizations do
+       namespace :organizations do
+            resources :company, :department, :sub_department, :holding_company, :product_group,
+            :product, :service_group, :service, :controller => 'organizations', :except => [:destroy, :edit, :update]
+       end
+     end
+
 
      resources :forms do
        namespace :forms do

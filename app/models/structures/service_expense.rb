@@ -1,8 +1,8 @@
-module Products
-    class Service < Product
+module Structures
+    class ServiceExpense < Structure
       #this sorts out routing issues for subclassing
       def self.model_name
-        Product.model_name
+         Structure.model_name
       end
 
     end

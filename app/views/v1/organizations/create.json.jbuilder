@@ -10,8 +10,9 @@ json.data do
       :income,
       :direct_expense,
       :indirect_expense,
-      :administrative_cost,
+      :adminstrative_cost,
       :active,
+      :ancestry,
       :created_at,
       :updated_at
 

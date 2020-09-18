@@ -15,6 +15,7 @@ class CreateProfiles < ActiveRecord::Migration[6.0]
       t.boolean :revoke_profile, default: false
       t.integer :confirmed_by
       t.integer :revoked_by
+   #  t.string :workflow_state    
 
       t.timestamps
     end

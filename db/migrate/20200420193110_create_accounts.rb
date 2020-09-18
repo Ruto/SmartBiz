@@ -8,6 +8,7 @@ class CreateAccounts < ActiveRecord::Migration[6.0]
       t.boolean :active, default: false
       t.references :user, null: false, foreign_key: true
       t.boolean :fully_approved, default: false
+   #  t.string :workflow_state    
 
       t.timestamps
     end

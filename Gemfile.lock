@@ -160,6 +160,10 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
+    workflow (2.0.2)
+    workflow-activerecord (4.1.7)
+      activerecord (>= 3.0, < 6.1)
+      workflow (~> 2.0)
     zeitwerk (2.3.0)
 
 PLATFORMS
@@ -182,6 +186,8 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
+  workflow
+  workflow-activerecord
 
 RUBY VERSION
    ruby 2.5.1p57

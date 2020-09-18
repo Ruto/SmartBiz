@@ -10,12 +10,11 @@ class CreateTransactions < ActiveRecord::Migration[6.0]
       t.float :balance
       t.float :total_balance
       t.text :memo
-      t.references :image, null: false, foreign_key: true
       t.references :account, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
-      t.boolean :checked, default: false
-      t.boolean :closed, default: false
-
+      t.boolean :fully_approved, default: false
+   #  t.string :workflow_state
+   
       t.timestamps
     end
   end

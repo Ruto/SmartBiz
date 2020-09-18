@@ -7,6 +7,7 @@ class CreateForms < ActiveRecord::Migration[6.0]
       t.boolean :active, default: true
       t.references :structure, null: true, foreign_key: true
       t.references :user, null: false, foreign_key: true
+   #  t.string :workflow_state
 
       t.timestamps
     end

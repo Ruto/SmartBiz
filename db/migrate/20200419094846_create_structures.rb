@@ -10,6 +10,7 @@ class CreateStructures < ActiveRecord::Migration[6.0]
       t.integer :structure_id
       t.references :structurable, polymorphic: true, null: true
       t.references :user, null: false, foreign_key: true
+   #  t.string :workflow_state
 
       t.timestamps
     end

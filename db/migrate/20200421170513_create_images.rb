@@ -6,6 +6,7 @@ class CreateImages < ActiveRecord::Migration[6.0]
       t.text :memo
       t.references :imageable, polymorphic: true, null: false
       t.boolean :checked, default: false
+   #  t.string :workflow_state    
 
       t.timestamps
     end

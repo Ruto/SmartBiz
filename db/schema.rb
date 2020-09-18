@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2020_08_29_104918) do
     t.string "code"
     t.string "system_code"
     t.string "custom_code"
+    t.string "barcode"
     t.string "codable_type", null: false
     t.bigint "codable_id", null: false
     t.boolean "active"
@@ -71,32 +72,30 @@ ActiveRecord::Schema.define(version: 2020_08_29_104918) do
     t.string "name"
     t.string "alias"
     t.string "type"
+    t.string "ancestry"
     t.string "category"
     t.boolean "income"
     t.boolean "direct_expense"
     t.boolean "indirect_expense"
-    t.boolean "administrative_cost"
+    t.boolean "adminstrative_cost"
     t.boolean "active", default: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["ancestry"], name: "index_organizations_on_ancestry"
     t.index ["user_id"], name: "index_organizations_on_user_id"
   end
 
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.string "alias"
-    t.boolean "goods"
-    t.boolean "service"
-    t.boolean "experience"
+    t.string "type"
+    t.string "ancestry"
     t.boolean "income"
-    t.boolean "expense"
-    t.string "durability"
-    t.string "consumer_product"
-    t.string "industrial_product"
-    t.boolean "divisible"
-    t.boolean "value_addable"
-    t.boolean "active"
+    t.boolean "direct_expense"
+    t.boolean "indirect_expense"
+    t.boolean "adminstrative_cost"
+    t.boolean "active", default: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
